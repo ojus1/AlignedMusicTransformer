@@ -8,11 +8,11 @@ Examples of pieces I love:
 3. [Secret of the Forest](https://www.youtube.com/watch?v=3vgTnT5iKQc)
 
 
-# Data
-Combine [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano); and MIDI files scraped from [Ichigo's](https://ichigos.com/sheets/) and [VGMusic](http://www.vgmusic.com/music/other/miscellaneous/piano/).
+## Data
+Combine [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano); and MIDI files scraped from [Ichigo's](https://ichigos.com/sheets/) and [VGMusic](http://www.vgmusic.com/music/other/miscellaneous/piano/). Scripts to scrape from Ichigo's and VGMusic are under [here](./scrape/)
 
-Scripts to scrape from Ichigo's and VGMusic are under [here](./scrape/)
-First download [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano) and extract under `data/giant_midi`.
+
+First download [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano) and extract under `data/giant_midi`. Then run the following:
 
 ```bash
 python3 scrape/ichigos.py
@@ -22,7 +22,7 @@ ln -s data/ichigos/* data/all/
 ln -s data/giant_midi/* data/all/
 ```
 
-# Preprocessing
+### Preprocessing
 
 `python3 preprocess.py data/all data/processed`
 

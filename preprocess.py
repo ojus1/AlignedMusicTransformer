@@ -15,9 +15,10 @@ def process_one(path, save_dir):
 
         with open('{}/{}.pickle'.format(save_dir, path.split('/')[-1]), 'wb') as f:
             pickle.dump(data, f)
+        return 0
     except:
-        pass
-    
+        return 1
+
 def preprocess_midi_files_under(midi_root, save_dir):
     midi_paths = list(utils.find_files_by_extensions(midi_root, ['.mid', '.midi']))
     os.makedirs(save_dir, exist_ok=True)
@@ -34,9 +35,10 @@ def preprocess_midi_files_under(midi_root, save_dir):
     #     except:
     #         pass
         
-    Parallel(n_jobs=-1, prefer="processes")(delayed(process_one)(p, save_dir) for p in tqdm(midi_paths))
-
+    skipped = Parallel(n_jobs=-1, prefer="processes")(delayed(process_one)(p, save_dir) for p in tqdm(midi_paths))
+    print("Total: ", len(midi_paths), "skipped", sum(skipped))
 if __name__ == '__main__':
     preprocess_midi_files_under(
             midi_root=sys.argv[1],
             save_dir=sys.argv[2])
+pass

@@ -3,4 +3,4 @@ max_seq: 2048
 embedding_dim: 256
 num_layers: 6
 event_dim: 388
-fp16:
+fp16: true

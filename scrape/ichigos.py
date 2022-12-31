@@ -99,7 +99,7 @@ def parse_pages():
     return links
 
 def download(link, i):
-    path = os.path.join("data/ichigos", str(i))
+    path = os.path.join("data/ichigos", f"{i}.mid")
 
     with open(path, "wb") as f:
         f.write(requests.get(link).content)
