@@ -4,7 +4,7 @@ import re
 import os
 from joblib import Parallel, delayed
 from tqdm import tqdm
-os.makedirs("data/", exist_ok=True)
+os.makedirs("data/vgmusic", exist_ok=True)
 
 page_url = "http://vgmusic.com/music/other/miscellaneous/piano/"
 soup = BeautifulSoup(requests.get(page_url).content, "html.parser")
@@ -15,7 +15,7 @@ links = [item.attrs["href"] for item in links]
 
 dl_root = "data/vgmusic/"
 def download(url, midi_name):
-    path = os.path.join(dl_root, midi_name)
+    path = os.path.join(dl_root, f"vgmusic_{midi_name}")
     dl_url = f"{url}/{midi_name}"
 
     with open(path, "wb") as f:

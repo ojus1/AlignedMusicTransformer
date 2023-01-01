@@ -4,7 +4,7 @@ import re
 import os
 from joblib import Parallel, delayed
 from tqdm import tqdm
-os.makedirs("data/", exist_ok=True)
+os.makedirs("data/ichigos", exist_ok=True)
 
 suffix = [
     'others',
@@ -99,7 +99,7 @@ def parse_pages():
     return links
 
 def download(link, i):
-    path = os.path.join("data/ichigos", f"{i}.mid")
+    path = os.path.join("data/ichigos", f"{i}_ichigo.mid")
 
     with open(path, "wb") as f:
         f.write(requests.get(link).content)

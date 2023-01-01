@@ -19,10 +19,10 @@ First download [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano) and [AD
 ```bash
 python3 scrape/ichigos.py
 python3 scrape/vgmusic.py
-ln -s data/vgmusic/* data/all/
-ln -s data/ichigos/* data/all/
-ln -s data/giant_midi/* data/all/
-ln -s data/adl-piano-midi/midi/adl-piano-midi/*/*/*/*.mid data/all/
+cp data/vgmusic/* data/all/
+cp data/ichigos/* data/all/
+cp data/giant_midi/* data/all/
+cp data/adl-piano-midi/midi/adl-piano-midi/*/*/*/*.mid data/all/
 ```
 ### Method 2
 Download from this link (link to be added later).

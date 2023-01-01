@@ -26,7 +26,7 @@ class Data:
         batch_files = random.sample(self.file_dict[mode], k=batch_size)
 
         batch_data = [
-            self._get_seq(file, length)
+            self._get_seq(file, length, test=mode != "train")
             for file in batch_files
         ]
         return np.array(batch_data)  # batch_size, seq_len
@@ -76,18 +76,21 @@ class Data:
                 self._seq_file_name_idx = 0
                 print('iter intialized')
 
-    def _get_seq(self, fname, max_length=None):
+    def _get_seq(self, fname, max_length=None, test=False):
         with open(fname, 'rb') as f:
             data = pickle.load(f)
         if max_length is not None:
-            if max_length <= len(data):
-                start = random.randrange(0,len(data) - max_length)
+            if max_length < len(data):
+                if test:
+                    start = 0
+                else:
+                    start = random.randrange(0,len(data) - max_length)
                 data = data[start:start + max_length]
             else:
-                raise IndexError
-                # data = np.append(data, config.token_eos)
-                # while len(data) < max_length:
-                #     data = np.append(data, config.pad_token)
+                # raise IndexError
+                data = np.append(data, config.token_eos)
+                while len(data) < max_length:
+                    data = np.append(data, config.pad_token)
         return data
 
 

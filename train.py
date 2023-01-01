@@ -106,13 +106,28 @@ for e in range(config.epochs):
         # result_metrics = metric_set(sample, batch_y)
         if b % 100 == 0:
             single_mt.eval()
-            eval_x, eval_y = dataset.slide_seq2seq_batch(2, config.max_seq, 'eval')
-            eval_x = torch.from_numpy(eval_x).contiguous().to(config.device, dtype=torch.int)
-            eval_y = torch.from_numpy(eval_y).contiguous().to(config.device, dtype=torch.int)
+            preds = []
+            gt = []
+            with torch.inference_mode():
+                for _ in range(512 // config.batch_size):
+                    eval_x, eval_y = dataset.slide_seq2seq_batch(config.batch_size, config.max_seq, 'eval')
+                    eval_x = torch.from_numpy(eval_x).contiguous().to(config.device, dtype=torch.int)
+                    eval_y = torch.from_numpy(eval_y).contiguous().to(config.device, dtype=torch.int)
 
-            eval_preiction, weights = single_mt.forward(eval_x)
+                    eval_preiction, weights = single_mt.forward(eval_x)
+                    preds.append(eval_preiction.cpu())
+                    gt.append(eval_y.cpu())
 
-            eval_metrics = metric_set(eval_preiction, eval_y)
+                    del eval_preiction
+                    del eval_x
+                    del eval_y
+                    
+                    torch.cuda.empty_cache()
+
+                preds = torch.cat(preds, dim=0)
+                gt = torch.cat(gt, dim=0)
+
+            eval_metrics = metric_set(preds, gt)
             torch.save(single_mt.state_dict(), args.model_dir+'/train-{}.pth'.format(e))
             if b == 0:
                 train_summary_writer.add_histogram("target_analysis", batch_y, global_step=e)
