@@ -9,10 +9,12 @@ Examples of pieces I love:
 
 
 ## Data
-Combine [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano); and MIDI files scraped from [Ichigo's](https://ichigos.com/sheets/) and [VGMusic](http://www.vgmusic.com/music/other/miscellaneous/piano/). Scripts to scrape from Ichigo's and VGMusic are under [here](./scrape/)
+Combine [ADL-Piano-MIDI](https://github.com/lucasnfe/adl-piano-midi), [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano); and MIDI files scraped from [Ichigo's](https://ichigos.com/sheets/) and [VGMusic](http://www.vgmusic.com/music/other/miscellaneous/piano/). Scripts to scrape from Ichigo's and VGMusic are under [here](./scrape/).
 
+The combined dataset is about 22K MIDI files, totalling about 1800 hours of piano music. To the best of my knowledge, this results in the biggest publicly available Piano MIDI dataset (the second biggest being GiantMIDI, 1200 hours).
 
-First download [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano) and extract under `data/giant_midi`. Then run the following:
+### Method 1
+First download [GiantMIDI](https://github.com/bytedance/GiantMIDI-Piano) and [ADL-Piano-MIDI](https://github.com/lucasnfe/adl-piano-midi), and  extract under `data/giant_midi` and `data/adl-piano-midi` respectively. Then run the following:
 
 ```bash
 python3 scrape/ichigos.py
@@ -20,7 +22,10 @@ python3 scrape/vgmusic.py
 ln -s data/vgmusic/* data/all/
 ln -s data/ichigos/* data/all/
 ln -s data/giant_midi/* data/all/
+ln -s data/adl-piano-midi/midi/adl-piano-midi/*/*/*/*.mid data/all/
 ```
+### Method 2
+Download from this link (link to be added later).
 
 ### Preprocessing
 
