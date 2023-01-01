@@ -1,0 +1,6 @@
+experiment: 'embedding768-layer8'
+max_seq: 4096
+embedding_dim: 768
+num_layers: 8
+event_dim: 388 
+fp16: true

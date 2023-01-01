@@ -72,6 +72,8 @@ eval_log_dir = 'logs/'+config.experiment+'/'+current_time+'/eval'
 train_summary_writer = SummaryWriter(train_log_dir)
 eval_summary_writer = SummaryWriter(eval_log_dir)
 
+best_acc = 0.0
+
 # Train Start
 print(">> Train start...")
 idx = 0
@@ -104,7 +106,7 @@ for e in range(config.epochs):
         train_summary_writer.add_scalar('iter_p_sec', end_time-start_time, global_step=idx)
 
         # result_metrics = metric_set(sample, batch_y)
-        if b % 100 == 0:
+        if b % 512 == 0:
             single_mt.eval()
             preds = []
             gt = []
@@ -128,7 +130,6 @@ for e in range(config.epochs):
                 gt = torch.cat(gt, dim=0)
 
             eval_metrics = metric_set(preds, gt)
-            torch.save(single_mt.state_dict(), args.model_dir+'/train-{}.pth'.format(e))
             if b == 0:
                 train_summary_writer.add_histogram("target_analysis", batch_y, global_step=e)
                 train_summary_writer.add_histogram("source_analysis", batch_x, global_step=e)
@@ -136,6 +137,10 @@ for e in range(config.epochs):
                     attn_log_name = "attn/layer-{}".format(i)
                     utils.attention_image_summary(
                         attn_log_name, weight, step=idx, writer=eval_summary_writer)
+
+            if best_acc < eval_metrics["accuracy"]:
+                best_acc = eval_metrics["accuracy"]
+                torch.save(single_mt.state_dict(), args.model_dir+'/acc-{}.pth'.format(best_acc))
 
             eval_summary_writer.add_scalar('loss', eval_metrics['loss'], global_step=idx)
             eval_summary_writer.add_scalar('accuracy', eval_metrics['accuracy'], global_step=idx)

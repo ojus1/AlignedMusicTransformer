@@ -1,6 +1,8 @@
 testdata
 data
 
+nohup.out
+*model/
 *.midi
 *.MID
 *.pickle
