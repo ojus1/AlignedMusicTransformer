@@ -5,6 +5,7 @@ from custom.metrics import *
 from custom.criterion import SmoothCrossEntropyLoss, CustomSchedule
 from custom.config import config
 from data import Data
+from midi_processor_fixed.transposition_aug import augment_batch
 
 import utils
 import datetime
@@ -84,6 +85,8 @@ for e in range(config.epochs):
         scheduler.optimizer.zero_grad()
         try:
             batch_x, batch_y = dataset.slide_seq2seq_batch(config.batch_size, config.max_seq)
+            # pitch transposition and time stretch augmentation
+            batch_x, batch_y = augment_batch(batch_x, batch_y, config.token_eos, config.token_sos, shift_range=3)
             batch_x = torch.from_numpy(batch_x).contiguous().to(config.device, non_blocking=True, dtype=torch.int)
             batch_y = torch.from_numpy(batch_y).contiguous().to(config.device, non_blocking=True, dtype=torch.int)
         except IndexError:

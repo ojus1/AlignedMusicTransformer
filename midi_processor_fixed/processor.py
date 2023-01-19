@@ -118,7 +118,8 @@ def _merge_note(snote_sequence):
                 result = pretty_midi.Note(on.velocity, snote.value, on.time, off.time)
                 result_array.append(result)
             except:
-                print('info removed pitch: {}'.format(snote.value))
+                # print('info removed pitch: {}'.format(snote.value))
+                pass
     return result_array
 
 
@@ -204,10 +205,11 @@ def _note_preprocess(susteins, notes):
     return note_stream
 
 
-def encode_midi(file_path):
+def encode_midi(file_path=None, mid=None):
     events = []
     notes = []
-    mid = pretty_midi.PrettyMIDI(midi_file=file_path)
+    if mid is None:
+        mid = pretty_midi.PrettyMIDI(midi_file=file_path)
 
     for inst in mid.instruments:
         inst_notes = inst.notes
