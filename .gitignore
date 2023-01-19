@@ -8,7 +8,7 @@ nohup.out
 *.pickle
 *__pycache__
 *.idea
-
+base/
 bin/
 dataset/
 result/

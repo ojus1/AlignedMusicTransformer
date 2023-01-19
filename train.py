@@ -1,4 +1,5 @@
 from model import MusicTransformer
+from model_rwkv import MusicTransformerRWKV
 import custom
 from custom.metrics import *
 from custom.criterion import SmoothCrossEntropyLoss, CustomSchedule
@@ -35,7 +36,7 @@ print(dataset)
 learning_rate = config.l_r
 
 # define model
-mt = MusicTransformer(
+mt = MusicTransformerRWKV(
             embedding_dim=config.embedding_dim,
             vocab_size=config.vocab_size,
             num_layer=config.num_layers,
@@ -116,7 +117,7 @@ for e in range(config.epochs):
                     eval_x = torch.from_numpy(eval_x).contiguous().to(config.device, dtype=torch.int)
                     eval_y = torch.from_numpy(eval_y).contiguous().to(config.device, dtype=torch.int)
 
-                    eval_preiction, weights = single_mt.forward(eval_x)
+                    eval_preiction = single_mt.forward(eval_x)
                     preds.append(eval_preiction.cpu())
                     gt.append(eval_y.cpu())
 
@@ -128,15 +129,15 @@ for e in range(config.epochs):
 
                 preds = torch.cat(preds, dim=0)
                 gt = torch.cat(gt, dim=0)
-
+                # print(preds.shape, gt.shape)
             eval_metrics = metric_set(preds, gt)
-            if b == 0:
-                train_summary_writer.add_histogram("target_analysis", batch_y, global_step=e)
-                train_summary_writer.add_histogram("source_analysis", batch_x, global_step=e)
-                for i, weight in enumerate(weights):
-                    attn_log_name = "attn/layer-{}".format(i)
-                    utils.attention_image_summary(
-                        attn_log_name, weight, step=idx, writer=eval_summary_writer)
+            # if b == 0:
+            #     train_summary_writer.add_histogram("target_analysis", batch_y, global_step=e)
+            #     train_summary_writer.add_histogram("source_analysis", batch_x, global_step=e)
+            #     for i, weight in enumerate(weights):
+            #         attn_log_name = "attn/layer-{}".format(i)
+            #         utils.attention_image_summary(
+            #             attn_log_name, weight, step=idx, writer=eval_summary_writer)
 
             if best_acc < eval_metrics["accuracy"]:
                 best_acc = eval_metrics["accuracy"]
