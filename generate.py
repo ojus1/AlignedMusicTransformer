@@ -5,7 +5,7 @@ from custom.config import config
 from model import MusicTransformer
 from data import Data
 import utils
-from midi_processor.processor import decode_midi, encode_midi
+from midi_processor_fixed.processor import decode_midi, encode_midi
 
 import datetime
 import argparse

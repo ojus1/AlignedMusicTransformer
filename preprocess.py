@@ -3,7 +3,7 @@ import os
 import sys
 from tqdm import tqdm
 import utils
-from midi_processor.processor import encode_midi
+from midi_processor_fixed.processor import encode_midi
 from joblib import Parallel, delayed
 
 def preprocess_midi(path):
